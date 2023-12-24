@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
+import json
 
 # Termination Criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -23,19 +24,37 @@ objp = objp * size_of_chessboard_squares_mm
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-for imgName in imgList:
-    imgPath = os.path.join(calibImgPath, imgName)
-    img = cv.imread(imgPath)
+def calibrate():
+    for imgName in imgList:
+        imgPath = os.path.join(calibImgPath, imgName)
+        img = cv.imread(imgPath)
 
-    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
-    # Find the chess board corners
-    ret, corners = cv.findChessboardCorners(gray, chessboardSize, None)
+        # Find the chess board corners
+        ret, corners = cv.findChessboardCorners(gray, chessboardSize, None)
 
-    # If found, add object points, image points (after refining them)
-    if ret == True:
-        objpoints.append(objp)
-        imgpoints.append(corners)
+        # If found, add object points, image points (after refining them)
+        if ret == True:
+            objpoints.append(objp)
+            imgpoints.append(corners)
 
-ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
-print(cameraMatrix)
+    ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
+    return cameraMatrix
+
+if __name__ == "__main__":
+    cameraMatrix = calibrate()
+    
+    dictionary = {
+        "cameraMatrix": cameraMatrix.tolist()
+    }
+    print(dictionary)
+
+    # Serializing json
+    json_object = json.dumps(dictionary, indent=4)
+    
+    # Writing to sample.json
+    with open("calibration.json", "w") as outfile:
+        outfile.write(json_object)
+    
+    print("Calibrated")
