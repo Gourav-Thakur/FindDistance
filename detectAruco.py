@@ -1,0 +1,33 @@
+import cv2 as cv
+import numpy as np
+
+arucoDictType = cv.aruco.DICT_5X5_100
+arucoDict = cv.aruco.getPredefinedDictionary(arucoDictType)
+arucoParams = cv.aruco.DetectorParameters()
+
+def detectAruco(img):
+
+    (corners, ids, rejected) = cv.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
+    
+    markersPos = []
+
+    if len(corners) > 0:
+        ids = ids.flatten()
+
+        for (markerCorner, markerId) in zip(corners, ids):
+            corners = markerCorner.reshape((4, 2))
+            (topLeft, topRight, bottomRight, bottomLeft) = corners
+
+            cx = (topLeft[0] + bottomRight[0])/2.0
+            cy = (topLeft[1] + bottomRight[1])/2.0
+
+            markersPos.append([cx, cy])
+    
+    return markersPos
+
+def showAruco():
+    img = cv.imread("Images/Aruco/2Markers.jpg")
+    print(detectAruco(img))
+
+if __name__ == "__main__":
+    showAruco()
