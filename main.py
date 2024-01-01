@@ -3,6 +3,8 @@ from detectAruco import detectAruco
 from findPos import findPos
 import json
 
+
+
 if __name__=="__main__":
 
     b = 300
