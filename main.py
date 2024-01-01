@@ -28,7 +28,11 @@ if __name__=="__main__":
     coor2 = tuple(d2[30])
     aruco30 = [coor1, coor2]
 
+    coordinate = findPos(aruco30, cameraMatrix, b)
+
     print()
-    print("Depth - ", (findPos(aruco30, cameraMatrix, b))[2]/10, "cm.")
+    print("Depth - ", int(coordinate[2]/10), "cm.")
+    print("x-coor : ", int(coordinate[0]/10), "cm.")
+    print("y-coor : ", int(coordinate[1]/10), "cm.")
     print()
 
