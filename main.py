@@ -13,6 +13,8 @@ if __name__=="__main__":
     obj = json.loads(jsondata)
     cameraMatrix = obj['cameraMatrix']
 
+    # The path of both images, path1-left image; path2-right image
+
     path1 = "Images/Aruco/img120Left.jpg"
     path2 = "Images/Aruco/img120Right.jpg"
 
@@ -27,11 +29,6 @@ if __name__=="__main__":
     aruco30 = [coor1, coor2]
 
     print()
-    print("Depth - ", (findPos(aruco30, cameraMatrix, b))[2])
+    print("Depth - ", (findPos(aruco30, cameraMatrix, b))[2]/10, "cm.")
     print()
 
-    # print(type(coor))
-
-    # cv.circle(img, coor, 20, (255, 0, 0), -1)
-    # cv.imshow("hhiii", img)
-    # cv.waitKey(2000)
