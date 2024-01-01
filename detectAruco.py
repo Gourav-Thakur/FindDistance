@@ -9,7 +9,7 @@ def detectAruco(img):
 
     (corners, ids, rejected) = cv.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
     
-    markersPos = []
+    markersPos = {}
 
     if len(corners) > 0:
         ids = ids.flatten()
@@ -21,7 +21,7 @@ def detectAruco(img):
             cx = (topLeft[0] + bottomRight[0])/2.0
             cy = (topLeft[1] + bottomRight[1])/2.0
 
-            markersPos.append([cx, cy])
+            markersPos[markerId] = [cx, cy]
     
     return markersPos
 

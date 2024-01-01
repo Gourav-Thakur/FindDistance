@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 import os
 import json
+import glob
 
 # Termination Criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -10,14 +11,16 @@ cwd = os.getcwd()
 calibImgPath = os.path.join(cwd, "Images/Calibration/")
 imgList = os.listdir(calibImgPath)
 
-chessboardSize = (7, 10)
-frameSize = (3024, 4032)
+imgList = glob.glob("Images/Calibration/*.jpg")
+
+chessboardSize = (17, 11)
+frameSize = (4032, 3024)
 
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
 objp = np.zeros((chessboardSize[0] * chessboardSize[1], 3), np.float32)
 objp[:,:2] = np.mgrid[0:chessboardSize[0],0:chessboardSize[1]].T.reshape(-1,2)
 
-size_of_chessboard_squares_mm = 20
+size_of_chessboard_squares_mm = 9
 objp = objp * size_of_chessboard_squares_mm
 
 # Arrays to store object points and image points from all the images.
@@ -26,8 +29,8 @@ imgpoints = [] # 2d points in image plane.
 
 def calibrate():
     for imgName in imgList:
-        imgPath = os.path.join(calibImgPath, imgName)
-        img = cv.imread(imgPath)
+        # imgPath = os.path.join(calibImgPath, imgName)
+        img = cv.imread(imgName)
 
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
@@ -48,7 +51,6 @@ if __name__ == "__main__":
     dictionary = {
         "cameraMatrix": cameraMatrix.tolist()
     }
-    print(dictionary)
 
     # Serializing json
     json_object = json.dumps(dictionary, indent=4)
