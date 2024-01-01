@@ -6,7 +6,9 @@ arucoDict = cv.aruco.getPredefinedDictionary(arucoDictType)
 arucoParams = cv.aruco.DetectorParameters()
 
 def detectAruco(img):
-
+    arucoDictType = cv.aruco.DICT_5X5_100
+    arucoDict = cv.aruco.getPredefinedDictionary(arucoDictType)
+    arucoParams = cv.aruco.DetectorParameters()
     (corners, ids, rejected) = cv.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
     
     markersPos = {}
@@ -25,9 +27,9 @@ def detectAruco(img):
     
     return markersPos
 
-def showAruco():
-    img = cv.imread("Images/Aruco/2Markers.jpg")
+def showAruco(path):
+    img = cv.imread(path)
     print(detectAruco(img))
 
 if __name__ == "__main__":
-    showAruco()
+    showAruco("Image/Aruco/ArucoMarker.jpeg")
