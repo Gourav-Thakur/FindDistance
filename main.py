@@ -22,14 +22,12 @@ def main():
 
     d1 = detectAruco(img1)
     d2 = detectAruco(img2)
-    # print(d1)
-    # print(d2)
+    
     key1 = list(d1.keys())
     key2 = list(d2.keys())
 
     key1.sort()
     key2.sort()
-    print(key1, key2)
     if len(key1)<2 or len(key2)<2:
         print("All markers not detected...")
         return
