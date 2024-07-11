@@ -61,9 +61,21 @@ def main():
     print("\tz-", int(coordinate2[2]/10), "cm.")
     print("-"*10)
     print()
-    print("Distance between them -", int(distance)/10, "cm.")
+    print("Distance between them -", round(distance/10, 2), "cm.")
     print("-"*10)
     print()
+
+    # show left image
+    cv.circle(img1, tuple(map(int, coor1l)), int(25000//coordinate1[2]), (0, 0, 255), -1)
+    cv.circle(img1, tuple(map(int, coor2l)), int(25000//coordinate2[2]), (0, 0, 255), -1)
+    # make a double headed arrow from coor1l to coor2l
+    cv.arrowedLine(img1, tuple(map(int, coor1l)), tuple(map(int, coor2l)), (0, 0, 255), 10, tipLength=100/coordinate2[2])
+    cv.arrowedLine(img1, tuple(map(int, coor2l)), tuple(map(int, coor1l)), (0, 0, 255), 10, tipLength=100/coordinate1[2])
+    # add text on the line
+    cv.putText(img1, str(round(distance/10, 2))+" cm", (int((coor1l[0]+coor2l[0])/2), int((coor1l[1]+coor2l[1])/2)), cv.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 5)
+    cv.imshow("left", img1)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
 if __name__=="__main__":
     main()
